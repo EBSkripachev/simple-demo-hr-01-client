@@ -1,0 +1,7 @@
+.bg-selected {
+    background-color: rgb(225, 241, 255) !important;
+}
+
+.bg-selected-hover {
+    background-color: rgb(205, 231, 255) !important;
+}
