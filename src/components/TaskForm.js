@@ -16,22 +16,26 @@ const TaskForm = () => {
         } 
     } )
 
+ 
     const year = useSelector(state => state.tasks.year)
     const month = useSelector(state => state.tasks.month)
-    const [task, setTask] = useState({timeSheetId: '2', projectId: '', projectElementId: '', title: '', description: '', date: date, hours: '0.0'})
+    const [task, setTask] = useState({timeSheetId: '2', projectId: '', projectElementId: '', title: '', description: '', date: '', hours: '0.0'})
 
     const [projects, setProjects] = useState([])
     const [elements, setElements] = useState([])
 
     const [errors, setErrors] = useState({})
 
-
+    useEffect(() => {
+        task.date = new Date(date)
+    }, [date])
 
 
     const validate = () => {
-        const { date, projectId, projectElementId, hours } = task
+        const { projectId, projectElementId, date, hours } = task
         const newErrors = {}
-
+        console.log(date)
+    
         if (!date) {
             newErrors.date = true
         } else if (date.getFullYear() !== year || date.getMonth() !== month) {
@@ -107,7 +111,7 @@ const TaskForm = () => {
     }, [task.projectId, elements])
 
     const handleClear = () => {
-        setTask({...task, date: null, title: '', projectId: '', projectElementId: '', description: '', hours: '0.0'})
+        setTask({...task, date: '', title: '', projectId: '', projectElementId: '', description: '', hours: '0.0'})
         dispatch(selectDate(null))
         setErrors({})
     }
@@ -121,7 +125,7 @@ const TaskForm = () => {
                 type='date' 
                 isInvalid={errors.date}
                 onChange={handleChangeDate}
-                value={DatesUtils.toString(date)}
+                value={DatesUtils.toString(task.date)}
                 ref={dateRef}
                 />
                 <Form.Control.Feedback type="invalid">{DATE_INVALID_FEEDBACK}</Form.Control.Feedback>
